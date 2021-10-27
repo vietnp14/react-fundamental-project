@@ -9,25 +9,45 @@
   <script src="https://unpkg.com/@babel/standalone@7.12.4/babel.js"></script>
   <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
   <script type="text/babel">
-    function Message({subject, greeting}) {
-      return (
-        <div className="message">
-          {greeting}, {subject}
-        </div>
-      )
-    }
-    Message.propTypes = {
-      subject: PropTypes.string.isRequired,
-      greeting: PropTypes.string.isRequired,
-    }
+    function UsernameForm({onSubmitUsername}) {
+  const [error, setError] = React.useState(null)
 
-    const element = (
-      <div className="container">
-        <Message subject="World" greeting="Hello" />
-        <Message subject="World" greeting="Goodbye" />
+  function handleSubmit(event) {
+    event.preventDefault()
+    onSubmitUsername(event.target.elements.usernameInput.value)
+  }
+
+  function handleChange(event) {
+    const {value} = event.target
+    const isLowerCase = value === value.toLowerCase()
+    setError(isLowerCase ? null : 'Username must be lower case')
+  }
+
+  return (
+    <form>
+      <div>
+        <label htmlFor="usernameInput">Username:</label>
+        <input id="usernameInput" type="text" onChange={handleChange} />
       </div>
-    )
+      <div role="alert" style={{color: 'red'}}>
+        {error}
+      </div>
+      <button disabled={Boolean(error)} type="submit">
+        Submit
+      </button>
+    </form>
+  )
+}
 
-    ReactDOM.render(element, document.getElementById('root'))
+function App() {
+  const onSubmitUsername = username => alert(`You entered: ${username}`)
+  return (
+    <div style={{minWidth: 400}}>
+      <UsernameForm onSubmitUsername={onSubmitUsername} />
+    </div>
+  )
+}
+
+    ReactDOM.render(<App />, document.getElementById('root'))
   </script>
 </body>

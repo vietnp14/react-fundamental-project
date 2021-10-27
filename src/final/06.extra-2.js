@@ -19,7 +19,7 @@ function UsernameForm({onSubmitUsername}) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <div>
         <label htmlFor="usernameInput">Username:</label>
         <input id="usernameInput" type="text" onChange={handleChange} />
